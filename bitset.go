@@ -667,13 +667,13 @@ func (b *BitSet) WriteTo(stream io.Writer) (int64, error) {
 	length := uint64(b.length)
 
 	// Write length
-	err := binary.Write(stream, binary.BigEndian, length)
+	err := binary.Write(stream, binary.LittleEndian, length)
 	if err != nil {
 		return 0, err
 	}
 
 	// Write set
-	err = binary.Write(stream, binary.BigEndian, b.set)
+	err = binary.Write(stream, binary.LittleEndian, b.set)
 	return int64(b.BinaryStorageSize()), err
 }
 
@@ -682,7 +682,7 @@ func (b *BitSet) ReadFrom(stream io.Reader) (int64, error) {
 	var length uint64
 
 	// Read length first
-	err := binary.Read(stream, binary.BigEndian, &length)
+	err := binary.Read(stream, binary.LittleEndian, &length)
 	if err != nil {
 		return 0, err
 	}
@@ -693,7 +693,7 @@ func (b *BitSet) ReadFrom(stream io.Reader) (int64, error) {
 	}
 
 	// Read remaining bytes as set
-	err = binary.Read(stream, binary.BigEndian, newset.set)
+	err = binary.Read(stream, binary.LittleEndian, newset.set)
 	if err != nil {
 		return 0, err
 	}
